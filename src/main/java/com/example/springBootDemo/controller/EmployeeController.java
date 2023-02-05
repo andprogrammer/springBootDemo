@@ -3,7 +3,6 @@ package com.example.springBootDemo.controller;
 import com.example.springBootDemo.exception.ResouceNotFoundException;
 import com.example.springBootDemo.model.Employee;
 import com.example.springBootDemo.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,14 +11,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class EmployeeController {
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @PostMapping("/employees")
     public Employee addEmployee(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
     }
-
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -27,14 +28,14 @@ public class EmployeeController {
     }
 
     @GetMapping("employees/{id}")
-    public ResponseEntity<Employee> findEmployeeById(@PathVariable(value = "id") Integer employeeId) {
+    public ResponseEntity<Employee> findEmployeeById(@PathVariable(value = "id") Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResouceNotFoundException("Employee not found" + employeeId));
         return ResponseEntity.ok().body(employee);
     }
 
     @PutMapping("employees/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Integer employeeId,
+    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
                                                    @RequestBody Employee employeeDetails) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResouceNotFoundException("Employee not found for this id :: " + employeeId));
@@ -45,7 +46,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("employees/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable(value = "id") Integer employeeId) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable(value = "id") Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResouceNotFoundException("Employee not found" + employeeId));
         employeeRepository.delete(employee);
