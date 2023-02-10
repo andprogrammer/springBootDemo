@@ -26,11 +26,7 @@ class SpringBootDemoApplicationTests {
     private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.9-alpine");
 
     @Autowired
-    private final EmployeeRepository employeeRepository;
-
-    SpringBootDemoApplicationTests(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+    private EmployeeRepository employeeRepository;
 
     @Test
     void saveToDb() {
