@@ -1,55 +1,49 @@
 package com.example.springBootDemo.controller;
 
-import com.example.springBootDemo.exception.ResouceNotFoundException;
+import com.example.springBootDemo.dto.EmployeeRequest;
+import com.example.springBootDemo.dto.EmployeeResponse;
 import com.example.springBootDemo.model.Employee;
-import com.example.springBootDemo.repository.EmployeeRepository;
-import org.springframework.http.ResponseEntity;
+import com.example.springBootDemo.service.EmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/employee")
+@RequiredArgsConstructor
 public class EmployeeController {
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        employeeService.addEmployee(employeeRequest);
     }
 
-    @PostMapping("/employees")
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmployeeResponse> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeRepository.findAll());
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponse findEmployeeById(@PathVariable(value = "id") Long employeeId) {
+        return employeeService.getEmployee(employeeId);
     }
 
-    @GetMapping("employees/{id}")
-    public ResponseEntity<Employee> findEmployeeById(@PathVariable(value = "id") Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResouceNotFoundException("Employee not found" + employeeId));
-        return ResponseEntity.ok().body(employee);
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponse updateEmployee(@PathVariable(value = "id") Long employeeId,
+                                           @RequestBody Employee employeeDetails) {
+        return employeeService.updateEmployee(employeeId, employeeDetails);
     }
 
-    @PutMapping("employees/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable(value = "id") Long employeeId,
-                                                   @RequestBody Employee employeeDetails) {
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResouceNotFoundException("Employee not found for this id :: " + employeeId));
-        employee.setName(employeeDetails.getName());
-        final Employee updatedEmployee = employeeRepository.save(employee);
-        return ResponseEntity.ok(updatedEmployee);
-
-    }
-
-    @DeleteMapping("employees/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable(value = "id") Long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResouceNotFoundException("Employee not found" + employeeId));
-        employeeRepository.delete(employee);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteEmployee(@PathVariable(value = "id") Long employeeId) {
+        employeeService.deleteEmployee(employeeId);
     }
 }
