@@ -2,6 +2,8 @@
 
 Building an Application with Spring Boot
 
+JDK17, Springboot 2.7.8
+
 ###########################################
 
 https://start.spring.io/;

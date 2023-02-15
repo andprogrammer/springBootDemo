@@ -2,7 +2,7 @@ package com.example.springBootDemo.service;
 
 import com.example.springBootDemo.dto.EmployeeRequest;
 import com.example.springBootDemo.dto.EmployeeResponse;
-import com.example.springBootDemo.exception.ResouceNotFoundException;
+import com.example.springBootDemo.exception.ResourceNotFoundException;
 import com.example.springBootDemo.model.Employee;
 import com.example.springBootDemo.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +33,13 @@ public class EmployeeService {
 
     public EmployeeResponse getEmployee(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResouceNotFoundException("Employee not found" + employeeId));
+                () -> new ResourceNotFoundException(String.format("Employee {} not found", employeeId)));
         return mapToEmployeeResponse(employee);
     }
 
     public EmployeeResponse updateEmployee(Long employeeId, Employee employeeDetails) {
         Employee currentEmployee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResouceNotFoundException("Employee not found for this id :: " + employeeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
         currentEmployee.setName(employeeDetails.getName());
         final Employee updatedEmployee = employeeRepository.save(currentEmployee);
         return mapToEmployeeResponse(updatedEmployee);
@@ -47,7 +47,7 @@ public class EmployeeService {
 
     public void deleteEmployee(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
-                () -> new ResouceNotFoundException("Employee not found" + employeeId));
+                () -> new ResourceNotFoundException("Employee not found" + employeeId));
         employeeRepository.delete(employee);
     }
 

@@ -21,22 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = SpringBootDemoApplicationTests.DataSourceInitializer.class)
 class SpringBootDemoApplicationTests {
-
     @Container
     private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.9-alpine");
-
     @Autowired
     private EmployeeRepository employeeRepository;
 
     @Test
     void saveToDb() {
-        var employee = new Employee(8L, "David");
+        var employee = new Employee();
         employeeRepository.save(employee);
         assertEquals(1, employeeRepository.findAll().size());
     }
 
     public static class DataSourceInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
