@@ -29,7 +29,7 @@ class EmployeeServiceTest {
     @Test
     void givenProductToAddShouldReturnAddedProduct() {
         Employee emp = new Employee();
-        EmployeeRequest employeeRequest = EmployeeRequest.builder().name("dupa").build();
+        EmployeeRequest employeeRequest = EmployeeRequest.builder().name("John").build();
         when(employeeRepository.save(any())).thenReturn(emp);
         employeeService.addEmployee(employeeRequest);
         verify(employeeRepository, times(1)).save(any());

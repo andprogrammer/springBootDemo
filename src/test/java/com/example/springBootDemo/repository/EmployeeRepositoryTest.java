@@ -4,8 +4,11 @@ import com.example.springBootDemo.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 // uses H2
 
@@ -14,6 +17,9 @@ class EmployeeRepositoryTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @Test
     void employeeExistsWhenAfterSavingToDb() {
@@ -26,5 +32,19 @@ class EmployeeRepositoryTest {
 
         // then
         assertTrue(employeeExists);
+    }
+
+    @Test
+    void employeesExistWhenAfterSavingToDb() {
+        // given
+        testEntityManager.persist(new Employee());
+        testEntityManager.persist(new Employee());
+
+        // when
+        List<Employee> employees = employeeRepository.findAll();
+
+        // then
+        assertFalse(employees.isEmpty());
+        assertEquals(2, employees.size());
     }
 }

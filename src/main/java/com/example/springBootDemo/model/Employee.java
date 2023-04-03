@@ -15,5 +15,6 @@ public class Employee {
     @Id
     @GeneratedValue
     private Long id;
+//    @NotBlank // TODO
     private String name;
 }

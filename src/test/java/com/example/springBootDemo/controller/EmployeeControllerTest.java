@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,7 +49,7 @@ class EmployeeControllerTest {
     private Employee setUp() throws Exception {
         employeeRepository.deleteAll();
         var employee = new Employee();
-        mockMvc.perform(post(API_URL_EMPLOYEE)
+        mockMvc.perform(post(API_URL_EMPLOYEE + "/addEmpWithoutKafka")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated());
@@ -101,7 +102,7 @@ class EmployeeControllerTest {
     void deleteEmployee() throws Exception {
         // given
         var employee = new Employee();
-        mockMvc.perform(post(API_URL_EMPLOYEE)
+        mockMvc.perform(post(API_URL_EMPLOYEE + "/addEmpWithoutKafka")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated());

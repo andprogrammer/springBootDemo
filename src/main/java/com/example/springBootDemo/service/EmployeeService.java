@@ -15,15 +15,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class EmployeeService {
+
     private final EmployeeRepository employeeRepository;
 
-    public void addEmployee(EmployeeRequest employeeRequest) {
+    public Long addEmployee(EmployeeRequest employeeRequest) {
         Employee employee = Employee.builder()
                 .name(employeeRequest.getName())
                 .build();
 
         employeeRepository.save(employee);
         log.info("Employee {} is saved", employee.getName());
+        return employee.getId();
     }
 
     public List<EmployeeResponse> getAllEmployees() {
@@ -37,10 +39,10 @@ public class EmployeeService {
         return mapToEmployeeResponse(employee);
     }
 
-    public EmployeeResponse updateEmployee(Long employeeId, Employee employeeDetails) {
+    public EmployeeResponse updateEmployee(Long employeeId, EmployeeRequest employeeRequest) {
         Employee currentEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
-        currentEmployee.setName(employeeDetails.getName());
+        currentEmployee.setName(employeeRequest.getName());
         final Employee updatedEmployee = employeeRepository.save(currentEmployee);
         return mapToEmployeeResponse(updatedEmployee);
     }
