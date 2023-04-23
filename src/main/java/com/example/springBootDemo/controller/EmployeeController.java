@@ -2,8 +2,6 @@ package com.example.springBootDemo.controller;
 
 import com.example.springBootDemo.dto.EmployeeRequest;
 import com.example.springBootDemo.dto.EmployeeResponse;
-import com.example.springBootDemo.kafka.producer.EmployeeKafkaProducer;
-import com.example.springBootDemo.model.Employee;
 import com.example.springBootDemo.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,18 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
-    private final EmployeeKafkaProducer kafkaProducer;
-
-    @PostMapping("/addEmpWithoutKafka")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addEmployeeWithoutKafka(@RequestBody EmployeeRequest employeeRequest) {
-        employeeService.addEmployee(employeeRequest);
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addEmployee(@RequestBody EmployeeRequest employeeRequest) {
-        kafkaProducer.writeToKafka(employeeRequest);
+    public Long addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.addEmployee(employeeRequest);
     }
 
     @GetMapping

@@ -49,7 +49,7 @@ class EmployeeControllerTest {
     private Employee setUp() throws Exception {
         employeeRepository.deleteAll();
         var employee = new Employee();
-        mockMvc.perform(post(API_URL_EMPLOYEE + "/addEmpWithoutKafka")
+        mockMvc.perform(post(API_URL_EMPLOYEE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated());
@@ -102,7 +102,7 @@ class EmployeeControllerTest {
     void deleteEmployee() throws Exception {
         // given
         var employee = new Employee();
-        mockMvc.perform(post(API_URL_EMPLOYEE + "/addEmpWithoutKafka")
+        mockMvc.perform(post(API_URL_EMPLOYEE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(employee)))
                 .andExpect(status().isCreated());

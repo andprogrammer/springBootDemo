@@ -24,7 +24,7 @@ class EmployeeServiceTestV2 {
     private static final PostgreSQLContainer database = new PostgreSQLContainer<>("postgres:12.9-alpine");
 
     @DynamicPropertySource
-    static void kafkaProperties(DynamicPropertyRegistry registry) {
+    static void setDatabaseProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", () -> database.getJdbcUrl());
         registry.add("spring.datasource.username", () -> database.getUsername());
         registry.add("spring.datasource.password", () -> database.getPassword());
