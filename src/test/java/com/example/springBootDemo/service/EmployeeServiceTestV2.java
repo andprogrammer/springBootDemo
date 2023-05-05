@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class EmployeeServiceTestV2 {
     @Container
-    private static final PostgreSQLContainer database = new PostgreSQLContainer<>("postgres:12.9-alpine");
+    private static final PostgreSQLContainer database = new PostgreSQLContainer<>("postgres:latest");
 
     @DynamicPropertySource
     static void setDatabaseProperties(DynamicPropertyRegistry registry) {

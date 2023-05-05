@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(initializers = EmployeeControllerTest.DataSourceInitializer.class)
 class EmployeeControllerTest {
     @Container
-    private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.9-alpine");
+    private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:latest");
     private static final String API_URL_EMPLOYEE = "/api/employee";
     @Autowired
     private MockMvc mockMvc;
