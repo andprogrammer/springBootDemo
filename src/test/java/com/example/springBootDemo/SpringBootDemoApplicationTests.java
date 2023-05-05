@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ContextConfiguration(initializers = SpringBootDemoApplicationTests.DataSourceInitializer.class)
 class SpringBootDemoApplicationTests {
     @Container
-    private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:12.9-alpine");
+    private static final PostgreSQLContainer<?> database = new PostgreSQLContainer<>("postgres:latest");
     @Autowired
     private EmployeeRepository employeeRepository;
 
