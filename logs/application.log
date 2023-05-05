@@ -1,0 +1,4 @@
+05-05-2023 17:11:08.550 [main] INFO  c.e.s.SpringBootDemoApplication.logStarting - Starting SpringBootDemoApplication using Java 20.0.1 with PID 2594 (/home/legion/IdeaProjects/springBootDemo/target/classes started by legion in /home/legion/IdeaProjects/springBootDemo)
+05-05-2023 17:11:08.550 [main] INFO  c.e.s.SpringBootDemoApplication.logStartupProfileInfo - No active profile set, falling back to 1 default profile: "default"
+05-05-2023 17:11:11.212 [main] INFO  c.e.s.SpringBootDemoApplication.logStarted - Started SpringBootDemoApplication in 2.972 seconds (process running for 3.192)
+05-05-2023 17:11:46.719 [http-nio-8080-exec-2] INFO  c.e.s.service.EmployeeService.getAllEmployees - List all employees

@@ -29,17 +29,20 @@ public class EmployeeService {
     }
 
     public List<EmployeeResponse> getAllEmployees() {
+        log.info("List all employees");
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream().map(this::mapToEmployeeResponse).toList();
     }
 
     public EmployeeResponse getEmployee(Long employeeId) {
+        log.info("List single employee with id {}", employeeId);
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("Employee {} not found", employeeId)));
         return mapToEmployeeResponse(employee);
     }
 
     public EmployeeResponse updateEmployee(Long employeeId, EmployeeRequest employeeRequest) {
+        log.info("Update employee with id {}", employeeId);
         Employee currentEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
         currentEmployee.setName(employeeRequest.getName());
@@ -48,6 +51,7 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long employeeId) {
+        log.info("Delete employee with id {}", employeeId);
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResourceNotFoundException("Employee not found" + employeeId));
         employeeRepository.delete(employee);

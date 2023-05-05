@@ -82,6 +82,14 @@ $ docker-compose down
 
 ###########################################
 
+##### Alternative run via maven. Please remember about running postgres with proper configuration
+
+```bash
+$ spring-boot:run
+```
+
+###########################################
+
 ##### Rest Api curl(s) examples
 
 ```bash
