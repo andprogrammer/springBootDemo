@@ -1,24 +1,36 @@
 version: '3.1'
 services:
+
+  postgresqlspringbootdemodb:
+    image: "postgres:12"
+    container_name: postgresqlspringbootdemodb
+    networks:
+      - springbootdemov1-pgsql
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/legion/Documents/kubernetes/codes_k8_deployments/v4_springBootDemo/postgres/docker-pg-vol/data:/var/lib/postgresql/data
+      - /home/legion/Documents/kubernetes/codes_k8_deployments/v4_springBootDemo/postgres/init/initData.sql:/docker-entrypoint-initdb.d/initData.sql
+    environment:
+      - POSTGRES_DB=employeedb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
   app:
     container_name: springbootdemov1
     image: springbootdemov1
+    networks:
+      - springbootdemov1-pgsql
     build: ./
     ports:
       - "8080:8080"
+    depends_on:
+      - postgresqlspringbootdemodb
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresqlspringbootdemodb:5432/employeedb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      - postgresqlspringbootdemodb
 
-  postgresqlspringbootdemodb:
-    image: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=employeedb
+networks:
+  springbootdemov1-pgsql:

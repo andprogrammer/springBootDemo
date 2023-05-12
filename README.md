@@ -74,6 +74,8 @@ $ psql -h localhost -U postgres -d postgres -p 5432
 
 ```bash
 $ docker-compose up
+
+# If it does not work try execute above cmd twice
 ```
 
 ```bash
@@ -106,6 +108,56 @@ $ curl -H "Content-Type: application/json" -X GET http://localhost:8080/api/empl
 
 http://localhost:8080/swagger-ui/index.html
 
+
+###########################################
+
+##### Kubernetes
+## 1 replica of SpringBoot app as well as Postgresql db
+
+My dockerhub account -> dokcer3
+
+```bash
+docker build -f Dockerfile -t dokcer3/springbootdemov1:1.0 .
+docker push dokcer3/springbootdemov1:1.0
+
+
+# Clean up before running -> not required. Only in some specific cases.
+
+kubectl delete pvc --all
+kubectl delete all --all
+
+kubectl apply -f postgresql-claim0-persistentvolume.yaml
+kubectl apply -f postgresql-claim0-persistentvolumeclaim.yaml
+kubectl apply -f postgresql-initial-data-configmap.yaml
+kubectl apply -f postgresql-deployment.yaml
+kubectl apply -f postgresql-service.yaml
+
+
+kubectl apply -f springbootdemov1-deployment.yaml
+kubectl apply -f springbootdemov1-service.yaml
+
+
+minikube service springbootdemov1-service
+
+
+http://192.168.49.2:31995/api/employee
+
+curl -H "Content-Type: application/json" -X POST -d {\"name\":\"Skywalker\"} http://192.168.49.2:31995/api/employee
+
+
+# Clean up after running -> not required. Only in some specific cases.
+
+kubectl delete -f postgresql-claim0-persistentvolume.yaml
+kubectl delete -f postgresql-claim0-persistentvolumeclaim.yaml
+kubectl delete -f postgresql-initial-data-configmap.yaml
+kubectl delete -f postgresql-deployment.yaml
+kubectl delete -f postgresql-service.yaml
+
+
+kubectl delete -f springbootdemov1-deployment.yaml
+kubectl delete -f springbootdemov1-service.yaml
+
+```
 
 ###########################################
 
