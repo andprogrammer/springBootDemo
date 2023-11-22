@@ -27,7 +27,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void givenProductToAddShouldReturnAddedProduct() {
+    void givenEmployeeToAddShouldReturnAddedEmployee() {
         Employee emp = new Employee();
         EmployeeRequest employeeRequest = EmployeeRequest.builder().name("John").build();
         when(employeeRepository.save(any())).thenReturn(emp);
